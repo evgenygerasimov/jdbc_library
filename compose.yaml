@@ -1,0 +1,23 @@
+version: '3'
+services:
+  postgres_jdbc_library:
+    container_name: postgres_jdbc_library
+    image: postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user
+      POSTGRES_DB: jdbc_library
+    ports:
+      - "5432:5432"
+  jdbc_library:
+    build: ./
+    container_name: jdbc_library
+    image: jdbc_library
+    depends_on:
+      - postgres_jdbc_library
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_jdbc_library:5432/jdbc_library
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: user
+    ports:
+      - "8080:8080"
